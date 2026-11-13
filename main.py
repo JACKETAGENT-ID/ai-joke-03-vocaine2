@@ -6,7 +6,8 @@ output directory. The directory is resolved in this order:
 
 1. ``$MAKEFUN_OUTPUT_DIR``
 2. the first command-line argument
-3. ``./out``
+3. ``/output`` (the grader's writable mount — never a relative path,
+   the container's working directory is read-only)
 
 The file holds exactly the joke text — UTF-8, no trailing newline — and
 nothing else is written.
@@ -33,7 +34,7 @@ def resolve_output_dir(argv):
         return env_dir
     if len(argv) > 1:
         return argv[1]
-    return os.path.join(".", "out")
+    return "/output"
 
 
 def write_entry(directory):
