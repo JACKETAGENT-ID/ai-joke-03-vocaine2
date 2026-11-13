@@ -39,6 +39,13 @@ def resolve_output_dir(argv):
 
 def write_entry(directory):
     """Create *directory* if needed and write the joke into it."""
+    # Gate check, mirroring the competition rules: 1-280 Unicode code
+    # points and at least one non-whitespace character. Fail loudly
+    # rather than ever writing an invalid entry.
+    if not 1 <= len(JOKE) <= 280:
+        raise ValueError("joke must be 1-280 characters, got %d" % len(JOKE))
+    if not JOKE.strip():
+        raise ValueError("joke must contain a non-whitespace character")
     os.makedirs(directory, exist_ok=True)
     path = os.path.join(directory, ENTRY_FILENAME)
     # newline="" keeps the bytes exact on every platform.
